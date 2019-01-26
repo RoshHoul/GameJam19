@@ -24,15 +24,17 @@ public class Player : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
+            gameManager.ApplyDayAction(2);
             if (currentItem != null)
             {
+                
                 if(currentItem.type == ItemType.Collectible)
                 {
                     CollectItem(currentItem);
                 }
                 else if (currentItem.type == ItemType.Animated)
                 {
-                    gameManager.ApplyDayAction(currentItem.actionCost);
+               //     gameManager.ApplyDayAction(currentItem.actionCost);
                     currentItem.TriggerAnimation();
                 }
             }

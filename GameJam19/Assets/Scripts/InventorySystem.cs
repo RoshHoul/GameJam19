@@ -1,30 +1,75 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class InventorySystem : MonoBehaviour
 {
-    public GameObject inventory;
+    Player player;
+
+    public GameObject inventoryRoot;
+    public GameObject itemsParent;
+    public GameObject disabledObjects;
+
+    public bool isPlacingItem = false;
 
     bool isInventoryEnabled;
 
-    List<Item> items = new List<Item>();
-    
+    List<InventoryItem> items = new List<InventoryItem>();
+    List<Image> images = new List<Image>();
+
+    FirstPersonController fpsController;
+
     private void Start()
     {
-        isInventoryEnabled = inventory.activeSelf;
+        player = GetComponent<Player>();
+        isInventoryEnabled = inventoryRoot.activeSelf;
+        fpsController = GetComponent<FirstPersonController>();
     }
 
     public void ToggleInventory()
     {
         isInventoryEnabled = !isInventoryEnabled;
-        inventory.SetActive(isInventoryEnabled);
+        inventoryRoot.SetActive(isInventoryEnabled);
+
+        fpsController.enabled = !fpsController.isActiveAndEnabled;
+        if (!fpsController.enabled)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = !Cursor.visible;
+        }
     }
 
     public void AddItem(Item item)
     {
-        Debug.Log("Item added");
-        items.Add(item);
+        InventoryItem newItem = Instantiate(item.inventoryItemPrefab, itemsParent.transform).GetComponent<InventoryItem>();
+        newItem.GetComponent<Image>().sprite = item.icon;
+        newItem.worldPrefab = item.worldItemPrefab;
+        newItem.inventorySystem = this;
+        items.Add(newItem);
+
+        item.gameObject.transform.parent = disabledObjects.transform;
+        item.gameObject.transform.position = disabledObjects.transform.position;
+    }
+
+    public void PlaceItem(InventoryItem item)
+    {
+        isPlacingItem = true;
+
+        GameObject worldItem = Instantiate(item.worldPrefab, null);
+
+        worldItem.transform.position = player.transform.position + (player.transform.forward.normalized * 2);
+
+        Destroy(item.gameObject);
+
+        ToggleInventory();
+
+    }
+
+    public bool CanCollectItem()
+    {
+        return items.Count < 10;
     }
 
 }

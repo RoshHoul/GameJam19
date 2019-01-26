@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class Player : MonoBehaviour
 {
     BoxCollider col;
     InventorySystem inventory;
+    
 
     Item currentItem;
 
@@ -40,10 +42,15 @@ public class Player : MonoBehaviour
 
     void CollectItem(Item item)
     {
-        inventory.AddItem(item);
-        Destroy(item.gameObject);
-        Debug.Log("Item collected");
-        
+        if(inventory.CanCollectItem())
+        {
+            inventory.AddItem(item);
+        }
+        else
+        {
+            Debug.Log("Inventory full");
+            //tell the ui to say "inventory full"
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,4 +76,5 @@ public class Player : MonoBehaviour
             currentItem = null;
         }
     }
+    
 }

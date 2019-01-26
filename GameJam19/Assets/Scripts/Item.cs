@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     public ItemType type;
+    public int actionCost;
 
     public Sprite icon;
 
@@ -22,6 +23,7 @@ public class Item : MonoBehaviour
     public void TriggerAnimation()
     {
         animator.SetBool("isMoving", true);
+        actionCost = 0;
     }
 }
 

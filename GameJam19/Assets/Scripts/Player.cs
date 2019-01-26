@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    GameManager gameManager;
+
     BoxCollider col;
     InventorySystem inventory;
 
@@ -13,6 +15,7 @@ public class Player : MonoBehaviour
     {
         col = GetComponent<BoxCollider>();
         inventory = GetComponent<InventorySystem>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
@@ -27,6 +30,7 @@ public class Player : MonoBehaviour
                 }
                 else if (currentItem.type == ItemType.Animated)
                 {
+                    gameManager.ApplyDayAction(currentItem.actionCost);
                     currentItem.TriggerAnimation();
                 }
             }

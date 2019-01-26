@@ -5,6 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public ItemType type;
+    public int actionCost;
 
     Animator animator;
 
@@ -16,6 +17,7 @@ public class Item : MonoBehaviour
     public void TriggerAnimation()
     {
         animator.SetBool("isMoving", true);
+        actionCost = 0;
     }
 }
 

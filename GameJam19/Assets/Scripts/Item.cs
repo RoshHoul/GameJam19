@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
+    public PrefabLibrary library;
+
     public ItemType type;
+    public ItemName name;
     public ItemStatus status = ItemStatus.Inactive;
     public int actionCost;
-
-    public Sprite icon;
-
-    public GameObject inventoryItemPrefab;
-    public GameObject worldItemPrefab;
+    
+    public List<Item> canCombineWidth = new List<Item>();
 
     Animator animator;
 
@@ -32,15 +32,4 @@ public class Item : MonoBehaviour
     }
 }
 
-public enum ItemType
-{
-    Collectible,
-    Animated
-}
-public enum ItemStatus
-{
-    Inactive, //Nothing happened to it yet
-    Activated, //It has been picked up / triggered the animation
-    Placed, //Placed from inventory
-    PlacedConfirmed //Confirmed position
-}
+

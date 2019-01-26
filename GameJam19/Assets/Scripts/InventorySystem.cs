@@ -1,22 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class InventorySystem : MonoBehaviour
 {
+    public PrefabLibrary library;
+    public GameObject inventoryItemPrefab;
+
     Player player;
 
     public GameObject inventoryRoot;
     public GameObject itemsParent;
     public GameObject disabledObjects;
+    public Combinator combinator;
 
     public bool isPlacingItem = false;
 
     bool isInventoryEnabled;
 
-    List<InventoryItem> items = new List<InventoryItem>();
+    public List<InventoryItem> items = new List<InventoryItem>();
     List<Image> images = new List<Image>();
 
     FirstPersonController fpsController;
@@ -41,28 +46,51 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void AddItem(Item item)
+    public void AddItem(ItemName name)
     {
-        InventoryItem newItem = Instantiate(item.inventoryItemPrefab, itemsParent.transform).GetComponent<InventoryItem>();
-        newItem.GetComponent<Image>().sprite = item.icon;
-        newItem.worldPrefab = item.worldItemPrefab;
+        InventoryItem newItem = Instantiate(inventoryItemPrefab, itemsParent.transform).GetComponent<InventoryItem>();
+        newItem.GetComponent<Image>().sprite = library.GetSprite(name);
         newItem.inventorySystem = this;
+        newItem.name = name;
         items.Add(newItem);
-
-        item.gameObject.transform.parent = disabledObjects.transform;
-        item.gameObject.transform.position = disabledObjects.transform.position;
     }
 
-    public void RemoveItem(InventoryItem item)
+    public void AddItem(InventoryItem item)
     {
-        items.Remove(item);
+        items.Add(item);
+        item.status = ItemStatus.Activated;
+        item.transform.parent = itemsParent.transform;
+    }
+
+    public void RemoveItem(ItemName removeName)
+    {
+        InventoryItem toRemove = items.First(item => item.name == removeName);
+        items.Remove(toRemove);
+    }
+
+    public void HighlightItem(ItemName name)
+    {
+        InventoryItem toLight = items.First(x => x.name == name);
+        if(toLight != null)
+        {
+            toLight.HighLight();
+        }
+    }
+
+    public void UnHighlightItem(ItemName name)
+    {
+        InventoryItem toLight = items.First(x => x.name == name);
+        if (toLight != null)
+        {
+            toLight.UnHighLight();
+        }
     }
 
     public void PlaceItem(InventoryItem item)
     {
         isPlacingItem = true;
 
-        player.LoadInHand(item);
+        player.LoadInHand(item.name);
        
         ToggleInventory();
     }
@@ -71,5 +99,5 @@ public class InventorySystem : MonoBehaviour
     {
         return items.Count < 10;
     }
-
+    
 }

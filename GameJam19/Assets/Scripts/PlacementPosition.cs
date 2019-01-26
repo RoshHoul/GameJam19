@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlacementPosition : MonoBehaviour
 {
-    GameObject itemBeingHeld = null;
+    Item itemBeingHeld = null;
     private void OnTriggerEnter(Collider other)
     {
         Player player = other.gameObject.GetComponent<Player>();
@@ -16,7 +16,7 @@ public class PlacementPosition : MonoBehaviour
                 itemBeingHeld = player.activeHandItem;
                 player.activeHandItem.transform.parent = this.transform;
                 player.activeHandItem.transform.position = this.transform.position;
-                itemBeingHeld.GetComponent<Item>().status = ItemStatus.Placed;
+                itemBeingHeld.status = ItemStatus.Placed;
             }
         }
     }
@@ -33,7 +33,7 @@ public class PlacementPosition : MonoBehaviour
                 {
                     itemBeingHeld.transform.parent = player.itemHolder.transform;
                     itemBeingHeld.transform.position = player.itemHolder.transform.position;
-                    itemBeingHeld.GetComponent<Item>().status = ItemStatus.Activated;
+                    itemBeingHeld.status = ItemStatus.Activated;
                     itemBeingHeld = null;
                 }
             }

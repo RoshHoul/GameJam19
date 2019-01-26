@@ -9,7 +9,11 @@ public class Player : MonoBehaviour
 
     BoxCollider col;
     InventorySystem inventory;
-    
+
+    //Item in hand
+    public GameObject itemHolder;
+    GameObject activeHandItem;
+
 
     Item currentItem;
 
@@ -24,7 +28,7 @@ public class Player : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            gameManager.ApplyDayAction(2);
+            //gameManager.ApplyDayAction(2); // Quick test on action points
             if (currentItem != null)
             {
                 
@@ -34,9 +38,17 @@ public class Player : MonoBehaviour
                 }
                 else if (currentItem.type == ItemType.Animated)
                 {
-               //     gameManager.ApplyDayAction(currentItem.actionCost);
+                    gameManager.ApplyDayAction(currentItem.actionCost);
                     currentItem.TriggerAnimation();
                 }
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (activeHandItem != null)
+            {
+                Destroy(activeHandItem);
             }
         }
 
@@ -57,6 +69,13 @@ public class Player : MonoBehaviour
             Debug.Log("Inventory full");
             //tell the ui to say "inventory full"
         }
+    }
+
+    public void LoadInHand(InventoryItem item)
+    {
+
+        activeHandItem = Instantiate(item.worldPrefab, itemHolder.transform, false);
+
     }
 
     private void OnTriggerEnter(Collider other)

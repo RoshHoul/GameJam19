@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour {
     private void Start()
     {
         dayActionPoints = initialDayPoints;
+
         startPosition = sun.transform.position;
+
         morningAngle = 60.0f;
         dayAngle = 120.0f;
         nightAngle = 180.0f;
@@ -49,15 +51,17 @@ public class GameManager : MonoBehaviour {
         {
             float currentAngle = Vector3.Angle(lightTarget.position - startPosition, lightTarget.position - sun.transform.position);
 
-            if ((currentAngle < morningAngle) && (dayActionPoints <= initialDayPoints) && (dayActionPoints >= (initialDayPoints * 60 / 100))) {
+            int third = 30 * initialDayPoints / 100; // One third of the initial days, calculated for convenience
+
+            if ((currentAngle < morningAngle) && (dayActionPoints <= initialDayPoints) && (dayActionPoints >= third * 2)) {
                 Debug.Log("Rotate");
                 sun.transform.RotateAround(lightTarget.position, Vector3.right, 10f * Time.deltaTime);
             } 
-            else if ((currentAngle < dayAngle) && (dayActionPoints <= (initialDayPoints * 60 / 100)) && (dayActionPoints >= (initialDayPoints * 30/100)))
+            else if ((currentAngle < dayAngle) && (dayActionPoints <= third * 2) && (dayActionPoints >= third))
             {
                 sun.transform.RotateAround(lightTarget.position, Vector3.right, 10f * Time.deltaTime);
             } 
-            else if ((currentAngle < nightAngle) && (dayActionPoints <= (initialDayPoints * 30 / 100))) {
+            else if ((currentAngle < nightAngle) && (dayActionPoints <= third)) {
                 sun.transform.RotateAround(lightTarget.position, Vector3.right, 10f * Time.deltaTime);
             }
 

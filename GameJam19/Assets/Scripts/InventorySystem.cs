@@ -57,11 +57,11 @@ public class InventorySystem : MonoBehaviour
     {
         isPlacingItem = true;
 
-        GameObject worldItem = Instantiate(item.worldPrefab, null);
+        player.LoadInHand(item);
+        //GameObject worldItem = Instantiate(item.worldPrefab, null);
+        //worldItem.transform.position = player.transform.position + (player.transform.forward.normalized * 2);
+        //Destroy(item.gameObject);
 
-        worldItem.transform.position = player.transform.position + (player.transform.forward.normalized * 2);
-
-        Destroy(item.gameObject);
 
         ToggleInventory();
 

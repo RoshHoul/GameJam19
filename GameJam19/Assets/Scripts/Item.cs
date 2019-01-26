@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     public ItemType type;
+    public ItemStatus status = ItemStatus.Inactive;
     public int actionCost;
 
     public Sprite icon;
@@ -22,8 +23,12 @@ public class Item : MonoBehaviour
 
     public void TriggerAnimation()
     {
-        animator.SetBool("isMoving", true);
-        actionCost = 0;
+        if(status == ItemStatus.Inactive)
+        {
+            animator.SetBool("isMoving", true);
+            actionCost = 0;
+            status = ItemStatus.Activated;
+        }
     }
 }
 
@@ -31,4 +36,11 @@ public enum ItemType
 {
     Collectible,
     Animated
+}
+public enum ItemStatus
+{
+    Inactive, //Nothing happened to it yet
+    Activated, //It has been picked up / triggered the animation
+    Placed, //Placed from inventory
+    PlacedConfirmed //Confirmed position
 }

@@ -10,5 +10,6 @@ public class InventoryItem : MonoBehaviour
     public void Clicked()
     {
         inventorySystem.PlaceItem(this);
+        Destroy(this.gameObject);
     }
 }

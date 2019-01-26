@@ -53,18 +53,18 @@ public class InventorySystem : MonoBehaviour
         item.gameObject.transform.position = disabledObjects.transform.position;
     }
 
+    public void RemoveItem(InventoryItem item)
+    {
+        items.Remove(item);
+    }
+
     public void PlaceItem(InventoryItem item)
     {
         isPlacingItem = true;
 
         player.LoadInHand(item);
-        //GameObject worldItem = Instantiate(item.worldPrefab, null);
-        //worldItem.transform.position = player.transform.position + (player.transform.forward.normalized * 2);
-        //Destroy(item.gameObject);
-
-
+       
         ToggleInventory();
-
     }
 
     public bool CanCollectItem()

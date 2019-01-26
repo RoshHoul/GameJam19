@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour {
             int third = 30 * initialDayPoints / 100; // One third of the initial days, calculated for convenience
 
             if ((currentAngle < morningAngle) && (dayActionPoints <= initialDayPoints) && (dayActionPoints >= third * 2)) {
-                Debug.Log("Rotate");
                 sun.transform.RotateAround(lightTarget.position, Vector3.right, 10f * Time.deltaTime);
             } 
             else if ((currentAngle < dayAngle) && (dayActionPoints <= third * 2) && (dayActionPoints >= third))

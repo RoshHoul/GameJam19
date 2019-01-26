@@ -5,6 +5,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class Player : MonoBehaviour
 {
+    public PrefabLibrary library;
     GameManager gameManager;
 
     BoxCollider col;
@@ -12,7 +13,7 @@ public class Player : MonoBehaviour
 
     //Item in hand
     public GameObject itemHolder;
-    public GameObject activeHandItem;
+    public Item activeHandItem;
     
     Item itemInVicinity;
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
                 if(activeHandItem != null && activeHandItem.GetComponent<Item>().status == ItemStatus.Placed)
                 {
                     inventory.isPlacingItem = false;
+                    inventory.RemoveItem(activeHandItem.name);
                     activeHandItem.GetComponent<Item>().status = ItemStatus.PlacedConfirmed;
                 }
             }
@@ -58,9 +60,9 @@ public class Player : MonoBehaviour
         {
             if (activeHandItem != null)
             {
-                inventory.AddItem(activeHandItem.GetComponent<Item>());
-                //Destroy(activeHandItem);
+                inventory.AddItem(activeHandItem.name);
                 inventory.isPlacingItem = false;
+                Destroy(activeHandItem.gameObject);
             }
         }
 
@@ -72,12 +74,12 @@ public class Player : MonoBehaviour
 
     void CollectItem(Item item)
     {
-        if(inventory.CanCollectItem() && item.status == ItemStatus.Inactive)
+        if(inventory.CanCollectItem())
         {
             if(item.status == ItemStatus.Inactive)
             {
-                inventory.AddItem(item);
-                item.status = ItemStatus.Activated;
+                inventory.AddItem(item.name);
+                Destroy(item.gameObject);
             }
         }
         else
@@ -86,11 +88,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void LoadInHand(InventoryItem item)
+    public void LoadInHand(ItemName name)
     {
-
-        activeHandItem = Instantiate(item.worldPrefab, itemHolder.transform, false);
-
+        activeHandItem = Instantiate(library.GetPrefab(name), itemHolder.transform, false).GetComponent<Item>();
+        activeHandItem.transform.position = itemHolder.transform.position;
     }
 
     private void OnTriggerEnter(Collider other)

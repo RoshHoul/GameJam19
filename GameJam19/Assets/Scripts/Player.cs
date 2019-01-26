@@ -6,7 +6,6 @@ public class Player : MonoBehaviour
 {
     BoxCollider col;
     InventorySystem inventory;
-    UISystem uiSystem;
 
     Item currentItem;
 
@@ -18,7 +17,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             if (currentItem != null)
             {
@@ -33,9 +32,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(Input.GetButtonDown("Tab"))
+        if(Input.GetKeyDown(KeyCode.Tab))
         {
-            uiSystem.ToggleInventory();
+            inventory.ToggleInventory();
         }
     }
 

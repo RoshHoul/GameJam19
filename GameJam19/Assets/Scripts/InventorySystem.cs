@@ -4,8 +4,22 @@ using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
 {
-    List<Item> items = new List<Item>();
+    public GameObject inventory;
 
+    bool isInventoryEnabled;
+
+    List<Item> items = new List<Item>();
+    
+    private void Start()
+    {
+        isInventoryEnabled = inventory.activeSelf;
+    }
+
+    public void ToggleInventory()
+    {
+        isInventoryEnabled = !isInventoryEnabled;
+        inventory.SetActive(isInventoryEnabled);
+    }
 
     public void AddItem(Item item)
     {

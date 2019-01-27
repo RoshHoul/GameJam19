@@ -31,5 +31,19 @@ public class CameraBrowser : MonoBehaviour
                 cameraIndex = 0;
             }
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            cameraIndex--;
+            if (cameraIndex > 0)
+            {
+                display.texture = cameras[cameraIndex].activeTexture;
+                cameraName.text = cameras[cameraIndex].name;
+            }
+            else
+            {
+                cameraIndex = cameras.Count - 1;
+            }
+        }
     }
 }

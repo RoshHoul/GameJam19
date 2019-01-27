@@ -9,15 +9,18 @@ public class EnemyAgent : MonoBehaviour {
     GameObject[] waypoints;
     List<GameObject> visitedWaypoints = new List<GameObject>();
 
-    AgentState currentState, prevState;
+    public AgentState currentState, prevState;
     GameObject target;
 
     public GameObject player;
     NavMeshAgent agent;
 
+    Animator anim;
 
     private void Start()
     {
+        anim = GetComponent<Animator>();
+
         if (waypoints == null)
         {
             waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
@@ -47,10 +50,10 @@ public class EnemyAgent : MonoBehaviour {
             //currentState = prevState;
             if (currentState == AgentState.Patrolling)
             {
-
-
-               Debug.Log("Target is: " + target.name);
+                Debug.Log("Target is: " + target.name);
+                agent.speed = 3.5f;
                 agent.SetDestination(target.transform.position);
+                anim.SetBool("startWalking", true);
                 //Debug.Log("Dist is " + Vector3.Distance(agent.destination, agent.transform.position));
                 if (IsPathReached())
                 {
@@ -64,6 +67,10 @@ public class EnemyAgent : MonoBehaviour {
             else if (currentState == AgentState.Idle)
             {
                 //execute idle animations
+                anim.SetBool("startWalking", false);
+                anim.SetInteger("idleRand", RandomAnimation());
+                StartCoroutine(WaitForAnimation());
+
                 target = TakeRandomWaypoint();
                 if (target != null && IsValidWaypoint(target))
                 {
@@ -71,6 +78,7 @@ public class EnemyAgent : MonoBehaviour {
                     currentState = AgentState.Patrolling;
 
                 }
+                Debug.Log("druga animaciq beibe");
             }
             if (IsPlayerInReach())
             {
@@ -79,6 +87,20 @@ public class EnemyAgent : MonoBehaviour {
             }
         }
 	}
+
+    private IEnumerator WaitForAnimation()
+    {
+        agent.isStopped = true;
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        agent.isStopped = false;
+    }
+
+    private int RandomAnimation()
+    {
+        int i = UnityEngine.Random.Range(0, 100);
+
+        return i % 2;
+    }
 
     private GameObject TakeRandomWaypoint()
     {

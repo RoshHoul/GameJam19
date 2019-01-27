@@ -15,6 +15,8 @@ public class EnemyAgent : MonoBehaviour {
     public GameObject player;
     NavMeshAgent agent;
 
+    public int live = 2;
+
     Animator anim;
 
     private void Start()
@@ -159,6 +161,12 @@ public class EnemyAgent : MonoBehaviour {
         }
 
         return false;
+    }
+
+    public void LoseLife()
+    {
+        live--;
+        anim.SetBool("fall", true);
     }
 }
 

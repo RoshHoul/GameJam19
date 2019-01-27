@@ -19,12 +19,16 @@ public class PlacementPosition : MonoBehaviour
 
     private void Update()
     {
-        if(itemBeingHeld != null && itemBeingHeld.status == ItemStatus.Placed)
+        if (Input.GetMouseButtonDown(0))
         {
-            Player player = FindObjectOfType<Player>();
-            FindObjectOfType<GameManager>().ApplyDayAction(player.activeHandItem.actionCost);
-            Destroy(player.activeHandItem);
-            sign.enabled = false;
+            if (itemBeingHeld != null && itemBeingHeld.status == ItemStatus.Placed)
+            {
+                Player player = FindObjectOfType<Player>();
+
+                FindObjectOfType<GameManager>().ApplyDayAction(player.activeHandItem.actionCost);
+                Destroy(player.activeHandItem);
+                sign.enabled = false;
+            }
         }
     }
 
@@ -72,7 +76,7 @@ public class PlacementPosition : MonoBehaviour
             InventorySystem inventory = player.GetComponent<InventorySystem>();
             if (inventory.isPlacingItem)
             {
-                if (itemBeingHeld == player.activeHandItem)
+                if (itemBeingHeld.name == player.activeHandItem.name)
                 {
                     if(presetTrap != null)
                     {

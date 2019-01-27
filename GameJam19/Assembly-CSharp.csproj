@@ -66,6 +66,7 @@
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshModifierVolume.cs" />
     <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshSurface.cs" />
     <Compile Include="Assets\Scripts\CameraBrowser.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Combinator.cs" />
     <Compile Include="Assets\Scripts\EnemyAgent.cs" />
     <Compile Include="Assets\Scripts\Enums.cs" />

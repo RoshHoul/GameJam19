@@ -1,16 +1,15 @@
 fileFormatVersion: 2
-guid: ab6720f2dca931b4cac1cff1b4f6ad4a
+guid: e81e7865d14fd5e45831d510d5b7b6c8
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: AirHornDetailOne
-    2100002: AirHornMain
-    2100004: AirHornDetailTwo
+    2100000: Deodorant
+    2100002: DeodorantT
     2300000: //RootNode
     3300000: //RootNode
-    4300000: AirHorn
+    4300000: Deodorant
   externalObjects: {}
   materials:
     importMaterials: 1

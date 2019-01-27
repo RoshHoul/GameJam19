@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     BoxCollider col;
     InventorySystem inventory;
+    FirstPersonController fpsController;
 
     //Item in hand
     public GameObject itemHolder;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
         col = GetComponent<BoxCollider>();
         inventory = GetComponent<InventorySystem>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        fpsController = GetComponent<FirstPersonController>();
     }
 
     void Update()
@@ -71,9 +73,19 @@ public class Player : MonoBehaviour
             inventory.ToggleInventory();
         }
 
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             cameraBrowserObj.SetActive(!cameraBrowserObj.activeSelf);
+            if (cameraBrowserObj.activeSelf)
+            {
+                fpsController.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = !Cursor.visible;
+            }
+            else
+            {
+                fpsController.enabled = true;
+            }
         }
     }
 

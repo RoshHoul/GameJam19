@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour {
 
     public AudioClip dayAmbient, nightAmbient;
     public AudioSource musicSource;
+
+    public float lengthOfNightInSeconds = 10;
+    public bool isTimerRunning = false;
 
     //GM Singleton
     private void Awake()
@@ -63,6 +67,7 @@ public class GameManager : MonoBehaviour {
     {
         if (timePhase == TimePhase.Day)
         {
+            enemy.SetState(AgentState.Inactive);
 
             musicSource.clip = dayAmbient;
             float currentAngle = Vector3.Angle(lightTarget.position - startPosition, lightTarget.position - sun.transform.position);
@@ -106,6 +111,10 @@ public class GameManager : MonoBehaviour {
         } else if (timePhase == TimePhase.Night)
         {
             enemy.SetState(AgentState.Patrolling);
+            if(!isTimerRunning)
+            {
+                StartCoroutine(StartCountDown());
+            }
             //musicSource.clip = nightAmbient;
             //musicSource.Play();
         }
@@ -142,8 +151,32 @@ public class GameManager : MonoBehaviour {
         dayActionPoints -= act;
     }
 
+    private IEnumerator StartCountDown()
+    {
+        isTimerRunning = true;
+        if(lengthOfNightInSeconds > 0)
+        {
+            lengthOfNightInSeconds -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+            StartCoroutine(StartCountDown());
+        }
+        else
+        {
+            GameOver(true);
+        }
+    }
 
-
+    public void GameOver(bool win)
+    {
+        if(win)
+        {
+            SceneManager.LoadScene("WIN", LoadSceneMode.Single);
+        }
+        else
+        {
+            SceneManager.LoadScene("LOSE", LoadSceneMode.Single);
+        }
+    }
 }
 
 public enum TimePhase

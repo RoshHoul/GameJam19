@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAgent : MonoBehaviour {
+public class EnemyAgent : MonoBehaviour
+{
 
     GameObject[] waypoints;
     List<GameObject> visitedWaypoints = new List<GameObject>();
@@ -14,8 +15,6 @@ public class EnemyAgent : MonoBehaviour {
 
     public GameObject player;
     NavMeshAgent agent;
-
-    public int live = 2;
 
     Animator anim;
 
@@ -46,8 +45,9 @@ public class EnemyAgent : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-		if (prevState != currentState)
+    void Update()
+    {
+        if (prevState != currentState)
         {
             //currentState = prevState;
             if (currentState == AgentState.Patrolling)
@@ -81,27 +81,13 @@ public class EnemyAgent : MonoBehaviour {
 
                 }
                 Debug.Log("druga animaciq beibe");
-            } else if (currentState == AgentState.WinChase)
-            {
-                anim.SetBool("startWalking", true);
-                target = player;
-                agent.SetDestination(target.transform.position);
             }
-
-
             if (IsPlayerInReach())
             {
-                prevState = currentState;
-                currentState = AgentState.WinChase;
+                //    Debug.Log("TAPANAR GUBISH");
+                target = player;
             }
-
-            
         }
-	}
-
-    public void SetState(AgentState state)
-    {
-        currentState = state;
     }
 
     private IEnumerator WaitForAnimation()
@@ -151,22 +137,25 @@ public class EnemyAgent : MonoBehaviour {
     private bool IsPlayerInReach()
     {
         Vector3 dir = player.transform.position - transform.position;
-        if (!Physics.Raycast(transform.position, dir, 25,  1 << LayerMask.NameToLayer("Walls"))) {
-            if (Physics.Raycast(transform.position, dir, 15,  1 << LayerMask.NameToLayer("Player")))
+        if (!Physics.Raycast(transform.position, dir, 25, 1 << LayerMask.NameToLayer("Walls")))
+        {
+            if (Physics.Raycast(transform.position, dir, 15, 1 << LayerMask.NameToLayer("Player")))
             {
                 return true;
             }
-            
+
             return false;
         }
 
         return false;
     }
 
-    public void LoseLife()
+    public void SetState(AgentState state)
     {
-        live--;
-        anim.SetBool("fall", true);
+        if(prevState == currentState)
+        {
+            currentState = state;
+        }
     }
 }
 
@@ -174,6 +163,5 @@ public enum AgentState
 {
     Idle,
     Patrolling,
-    WinChase,
     Inactive
 }

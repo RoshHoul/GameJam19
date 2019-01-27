@@ -114,6 +114,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.GetComponent<EnemyAgent>() != null)
+        {
+            FindObjectOfType<GameManager>().GameOver(false);
+        }
+
         Item anyItem = other.GetComponent<Item>();
 
         if (anyItem != null)

@@ -8,10 +8,12 @@ public class EnemyAgent : MonoBehaviour {
 
     GameObject[] waypoints;
     List<GameObject> visitedWaypoints = new List<GameObject>();
-    public AgentState currentState, prevState;
+
+    AgentState currentState, prevState;
     GameObject target;
 
-    public NavMeshAgent agent;
+    public GameObject player;
+    NavMeshAgent agent;
 
 
     private void Start()
@@ -46,9 +48,10 @@ public class EnemyAgent : MonoBehaviour {
             if (currentState == AgentState.Patrolling)
             {
 
+
                // Debug.Log("Target is: " + target.name);
                 agent.SetDestination(target.transform.position);
-                Debug.Log("Dist is " + Vector3.Distance(agent.destination, agent.transform.position));
+                //Debug.Log("Dist is " + Vector3.Distance(agent.destination, agent.transform.position));
                 if (IsPathReached())
                 {
                     Debug.Log(target.name + " reached");
@@ -62,14 +65,17 @@ public class EnemyAgent : MonoBehaviour {
             {
                 //execute idle animations
                 target = TakeRandomWaypoint();
-                Debug.Log("We idle");
                 if (target != null && IsValidWaypoint(target))
                 {
-                    Debug.Log("NEW TARGET IS " + target.name);
-                    
                     prevState = currentState;
                     currentState = AgentState.Patrolling;
+
                 }
+            }
+            if (IsPlayerInReach())
+            {
+                //    Debug.Log("TAPANAR GUBISH");
+                target = player;
             }
         }
 	}
@@ -99,6 +105,21 @@ public class EnemyAgent : MonoBehaviour {
             {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    private bool IsPlayerInReach()
+    {
+        Vector3 dir = player.transform.position - transform.position;
+        if (!Physics.Raycast(transform.position, dir, 25,  1 << LayerMask.NameToLayer("Walls"))) {
+            if (Physics.Raycast(transform.position, dir, 15,  1 << LayerMask.NameToLayer("Player")))
+            {
+                return true;
+            }
+            
+            return false;
         }
 
         return false;

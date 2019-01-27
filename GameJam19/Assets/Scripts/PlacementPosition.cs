@@ -19,16 +19,13 @@ public class PlacementPosition : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && presetTrap != null && presetTrap.activeSelf)
         {
-            if (itemBeingHeld != null && itemBeingHeld.status == ItemStatus.Placed)
-            {
-                Player player = FindObjectOfType<Player>();
+            Player player = FindObjectOfType<Player>();
 
-                FindObjectOfType<GameManager>().ApplyDayAction(player.activeHandItem.actionCost);
-                Destroy(player.activeHandItem);
-                sign.enabled = false;
-            }
+            FindObjectOfType<GameManager>().ApplyDayAction(player.activeHandItem.actionCost);
+            Destroy(player.activeHandItem);
+            sign.enabled = false;
         }
     }
 
@@ -54,16 +51,6 @@ public class PlacementPosition : MonoBehaviour
                     player.activeHandItem.gameObject.SetActive(false);
                     presetTrap.SetActive(true);
                 }
-                else
-                {
-                    itemBeingHeld = player.activeHandItem;
-                    player.activeHandItem.transform.parent = this.transform;
-                    player.activeHandItem.transform.position = this.transform.position;
-                    itemBeingHeld.status = ItemStatus.Placed;
-                }
-                
-
-                
             }
         }
     }
@@ -71,26 +58,16 @@ public class PlacementPosition : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Player player = other.gameObject.GetComponent<Player>();
-        if(itemBeingHeld != null && player != null)
+        if(player != null)
         {
             InventorySystem inventory = player.GetComponent<InventorySystem>();
             if (inventory.isPlacingItem)
             {
-                if (itemBeingHeld.name == player.activeHandItem.name)
+                if(presetTrap != null)
                 {
-                    if(presetTrap != null)
-                    {
-                        player.activeHandItem.gameObject.SetActive(true);
-                        presetTrap.SetActive(false);
-                        presetTrap.GetComponent<Item>().status = ItemStatus.Activated;
-                    }
-                    else
-                    {
-                        itemBeingHeld.transform.parent = player.itemHolder.transform;
-                        itemBeingHeld.transform.position = player.itemHolder.transform.position;
-                        itemBeingHeld.status = ItemStatus.Activated;
-                        itemBeingHeld = null;
-                    }
+                    player.activeHandItem.gameObject.SetActive(true);
+                    presetTrap.SetActive(false);
+                    presetTrap.GetComponent<Item>().status = ItemStatus.Activated;
                 }
             }
         }

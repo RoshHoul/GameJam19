@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour {
     float morningAngle, dayAngle, nightAngle;
     private Vector3 startPosition;
 
+    Player player;
+    EnemyAgent enemy;
+
     //GM Singleton
     private void Awake()
     {
@@ -39,6 +42,9 @@ public class GameManager : MonoBehaviour {
         dayActionPoints = initialDayPoints;
 
         startPosition = sun.transform.position;
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAgent>();
 
         morningAngle = 60.0f;
         dayAngle = 120.0f;
@@ -87,6 +93,9 @@ public class GameManager : MonoBehaviour {
                     Debug.Log("HIDE BEIBE");
                 }
             }
+        } else if (timePhase == TimePhase.Night)
+        {
+            enemy.SetState(AgentState.Patrolling);
         }
     }
 

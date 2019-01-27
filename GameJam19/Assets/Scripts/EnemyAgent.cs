@@ -31,8 +31,8 @@ public class EnemyAgent : MonoBehaviour {
             agent = GetComponent<NavMeshAgent>();
         }
 
-        currentState = AgentState.Patrolling;
-        prevState = AgentState.Idle;
+        currentState = AgentState.Inactive;
+        prevState = AgentState.Inactive;
 
         GameObject tempTarget = TakeRandomWaypoint();
 
@@ -87,6 +87,11 @@ public class EnemyAgent : MonoBehaviour {
             }
         }
 	}
+
+    public void SetState(AgentState state)
+    {
+        currentState = state;
+    }
 
     private IEnumerator WaitForAnimation()
     {
@@ -151,5 +156,6 @@ public class EnemyAgent : MonoBehaviour {
 public enum AgentState
 {
     Idle,
-    Patrolling
+    Patrolling,
+    Inactive
 }

@@ -79,12 +79,21 @@ public class EnemyAgent : MonoBehaviour {
 
                 }
                 Debug.Log("druga animaciq beibe");
+            } else if (currentState == AgentState.WinChase)
+            {
+                anim.SetBool("startWalking", true);
+                target = player;
+                agent.SetDestination(target.transform.position);
             }
+
+
             if (IsPlayerInReach())
             {
-                //    Debug.Log("TAPANAR GUBISH");
-                target = player;
+                prevState = currentState;
+                currentState = AgentState.WinChase;
             }
+
+            
         }
 	}
 
@@ -157,5 +166,6 @@ public enum AgentState
 {
     Idle,
     Patrolling,
+    WinChase,
     Inactive
 }

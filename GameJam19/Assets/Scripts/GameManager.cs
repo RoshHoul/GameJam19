@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public TimePhase timePhase = TimePhase.Day;
 
     public int initialDayPoints;
-    private int dayActionPoints;
+    public int dayActionPoints;
     
     //Hiding timer values
     float hidingTimer = 15.0f;
@@ -21,6 +21,12 @@ public class GameManager : MonoBehaviour {
     public Transform lightTarget;
     float morningAngle, dayAngle, nightAngle;
     private Vector3 startPosition;
+
+    Player player;
+    EnemyAgent enemy;
+
+    public AudioClip dayAmbient, nightAmbient;
+    public AudioSource musicSource;
 
     //GM Singleton
     private void Awake()
@@ -40,15 +46,25 @@ public class GameManager : MonoBehaviour {
 
         startPosition = sun.transform.position;
 
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAgent>();
+
         morningAngle = 60.0f;
         dayAngle = 120.0f;
         nightAngle = 180.0f;
+
+        musicSource = GetComponent<AudioSource>();
+
+        musicSource.clip = dayAmbient;
+        musicSource.Play();
     }
 
     private void Update()
     {
         if (timePhase == TimePhase.Day)
         {
+
+            musicSource.clip = dayAmbient;
             float currentAngle = Vector3.Angle(lightTarget.position - startPosition, lightTarget.position - sun.transform.position);
 
             int third = 30 * initialDayPoints / 100; // One third of the initial days, calculated for convenience
@@ -87,6 +103,11 @@ public class GameManager : MonoBehaviour {
                     Debug.Log("HIDE BEIBE");
                 }
             }
+        } else if (timePhase == TimePhase.Night)
+        {
+            enemy.SetState(AgentState.Patrolling);
+            //musicSource.clip = nightAmbient;
+            //musicSource.Play();
         }
     }
 

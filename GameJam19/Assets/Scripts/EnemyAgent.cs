@@ -31,8 +31,8 @@ public class EnemyAgent : MonoBehaviour {
             agent = GetComponent<NavMeshAgent>();
         }
 
-        currentState = AgentState.Patrolling;
-        prevState = AgentState.Idle;
+        currentState = AgentState.Inactive;
+        prevState = AgentState.Inactive;
 
         GameObject tempTarget = TakeRandomWaypoint();
 
@@ -79,14 +79,28 @@ public class EnemyAgent : MonoBehaviour {
 
                 }
                 Debug.Log("druga animaciq beibe");
+            } else if (currentState == AgentState.WinChase)
+            {
+                anim.SetBool("startWalking", true);
+                target = player;
+                agent.SetDestination(target.transform.position);
             }
+
+
             if (IsPlayerInReach())
             {
-                //    Debug.Log("TAPANAR GUBISH");
-                target = player;
+                prevState = currentState;
+                currentState = AgentState.WinChase;
             }
+
+            
         }
 	}
+
+    public void SetState(AgentState state)
+    {
+        currentState = state;
+    }
 
     private IEnumerator WaitForAnimation()
     {
@@ -151,5 +165,7 @@ public class EnemyAgent : MonoBehaviour {
 public enum AgentState
 {
     Idle,
-    Patrolling
+    Patrolling,
+    WinChase,
+    Inactive
 }

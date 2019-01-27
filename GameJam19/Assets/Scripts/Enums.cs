@@ -9,7 +9,11 @@ public enum ItemName
     BlueCube,
     GreenCube,
     YellowCube,
-    WhiteCube
+    WhiteCube,
+    PaintBucket,
+    Rope,
+    BucketRope,
+    Rake
 }
 
 public enum ItemType

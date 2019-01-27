@@ -34,9 +34,10 @@ public class Player : MonoBehaviour
             {
                 if(activeHandItem != null && activeHandItem.GetComponent<Item>().status == ItemStatus.Placed)
                 {
-                    inventory.isPlacingItem = false;
-                    inventory.RemoveItem(activeHandItem.name);
-                    activeHandItem.GetComponent<Item>().status = ItemStatus.PlacedConfirmed;
+                    //inventory.isPlacingItem = false;
+                    //inventory.RemoveItem(activeHandItem.name);
+                    //activeHandItem.GetComponent<Item>().status = ItemStatus.PlacedConfirmed;
+                    //Destroy(activeHandItem.gameObject);
                 }
             }
             else

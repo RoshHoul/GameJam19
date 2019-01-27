@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     //Item in hand
     public GameObject itemHolder;
     public Item activeHandItem;
-    
+    public GameObject cameraBrowserObj;
     Item itemInVicinity;
 
     void Start()
@@ -69,6 +69,11 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             inventory.ToggleInventory();
+        }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            cameraBrowserObj.SetActive(!cameraBrowserObj.activeSelf);
         }
     }
 

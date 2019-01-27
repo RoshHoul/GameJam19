@@ -49,7 +49,7 @@ public class EnemyAgent : MonoBehaviour {
             {
 
 
-               // Debug.Log("Target is: " + target.name);
+               Debug.Log("Target is: " + target.name);
                 agent.SetDestination(target.transform.position);
                 //Debug.Log("Dist is " + Vector3.Distance(agent.destination, agent.transform.position));
                 if (IsPathReached())
